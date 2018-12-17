@@ -10,22 +10,21 @@ pub fn run(ip: [u8; 4], port: u16) {
     let mut last_buff = [0;32];
 
     loop {
-        let mut buf = [0;32];
-        let (len, src) = socket.peek_from(&mut buf).expect("Receve failure");
-        let (_, _) = socket.recv_from(&mut last_buff).expect("Receve failure");
+        let mut buff = [0;32];
+        let (len, src) = socket.peek_from(&mut buff).expect("Receve failure");
+        last_buff = buff.clone();
+        let is_fix = &buff[0..4];
 
-        let is_fix = &buf[0..4];
-
-        if (is_fix.eq(&[9;4])) {
+        if is_fix.eq(&[9;4]) {
             let mut last = last_buff.clone();
             last.reverse();
             println!("Fix: ");
-            socket.send_to(&last, src).expect("Send failure");
+            socket.send_to(&last_buff, src).expect("Send failure");
             continue;
         }
 
-        println!("Receve from {}: {} - {:?}", &src.ip(), len, &buf);
-        buf.reverse();
-        socket.send_to(&buf, src).expect("Send failure");
+        println!("Receve from {}: {} - {:?}", &src.ip(), len, &buff);
+        buff.reverse();
+        socket.send_to(&buff, src).expect("Send failure");
     }
 }
