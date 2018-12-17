@@ -13,9 +13,8 @@ pub fn run(ip: [u8; 4], port: u16) {
         let mut buff = [0;32];
         let (len, src) = socket.peek_from(&mut buff).expect("Receve failure");
         last_buff = buff.clone();
-        let is_fix = &buff[0..4];
 
-        if is_fix.eq(&[9;4]) {
+        if buff[0..4].eq(&[9;4]) {
             let mut last = last_buff.clone();
             last.reverse();
             println!("Fix: ");
