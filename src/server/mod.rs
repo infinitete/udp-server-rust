@@ -10,7 +10,8 @@ pub fn run(ip: [u8; 4], port: u16) {
 
     loop {
         let mut buf = [0;32];
-        let (_len, src) = socket.recv_from(&mut buf).expect("Receve failure");
+        let (len, src) = socket.recv_from(&mut buf).expect("Receve failure");
+        println!("Receve from {}: {} - {:?}", &src.ip(), len, &buf);
         buf.reverse();
         socket.send_to(&buf, src).expect("Send failure");
     }
