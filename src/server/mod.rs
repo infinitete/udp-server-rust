@@ -17,9 +17,10 @@ pub fn run(ip: [u8; 4], port: u16) {
         let is_fix = &buf[0..4];
 
         if (is_fix.eq(&[9;4])) {
-            last_buff.reverse();
+            let mut last = last_buff.clone();
+            last.reverse();
             println!("Fix: ");
-            socket.send_to(&last_buff, src).expect("Send failure");
+            socket.send_to(&last, src).expect("Send failure");
             continue;
         }
 
