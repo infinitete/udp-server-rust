@@ -18,6 +18,7 @@ pub fn run(ip: [u8; 4], port: u16) {
 
         if (is_fix.eq(&[9;4])) {
             last_buff.reverse();
+            println!("Fix: ");
             socket.send_to(&last_buff, src).expect("Send failure");
             continue;
         }
